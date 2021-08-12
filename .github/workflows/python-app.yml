@@ -23,15 +23,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov codecov xenon
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        flake8 . --max-line-length=120 --ignore=W503 --exclude=.venv
     - name: Test with pytest
       run: |
         pytest --cov=./src --cov-report=xml --cov-config=.coveragerc
-    - name: Code metrics with xenon
-      run: |
-        xenon . --max-absolute C --max-modules B --max-average B
     - name: Upload coverage to codeCov
       uses: codecov/codecov-action@v2
       with:
