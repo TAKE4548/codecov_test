@@ -1,0 +1,7 @@
+[run]
+branch = True
+
+[report]
+skip_covered = True
+exclude_lines =
+    .*# cov: ignore
