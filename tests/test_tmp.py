@@ -7,4 +7,5 @@ from src.tmp import TMP
 class Test_TMP:
     @staticmethod
     def test_tmp():
+        a = 10
         assert True
