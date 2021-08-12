@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-
 class Test_TMP:
     @staticmethod
     def test_tmp():
