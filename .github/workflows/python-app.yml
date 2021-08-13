@@ -4,13 +4,11 @@
 name: test
 
 on:
-  push:
-    branches: [ test ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  CI:
+  setup:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -23,6 +21,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov codecov xenon
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Lint with flake8
+      run: |
+        flake8 . --max-line-length=120 --ignore=W503
     - name: Test with pytest
       run: |
         pytest --cov=./src --cov-report=xml --cov-config=.coveragerc
@@ -34,3 +35,6 @@ jobs:
         fail_ci_if_error: true
         files: ./coverage.xml
         verbose: true
+    - name: Code metrics with xenon
+      run: |
+        xenon . --max-absolute C --max-modules B --max-average B
