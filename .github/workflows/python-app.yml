@@ -5,12 +5,27 @@ name: test
 
 on:
   push:
-    branches: [ test ]
+    branches: [ ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  CI:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+    - name: Lint with flake8
+      run: |
+        flake8 . --max-line-length=120 --ignore=W503
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -34,3 +49,18 @@ jobs:
         fail_ci_if_error: true
         files: ./coverage.xml
         verbose: true
+  complexity:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install xenon
+    - name: Code metrics with xenon
+      run: |
+        xenon . --max-absolute C --max-modules B --max-average B
